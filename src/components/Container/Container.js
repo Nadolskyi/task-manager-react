@@ -1,18 +1,17 @@
 import React, { Component } from 'react'
 import './Container.css'
-import List from '../ListTask/ListTask.js'
+import ListTask from '../ListTask/ListTask'
 import AddTask from '../AddTask/AddTask'
+import ListContextProvider from '../../contexts/ListContext';
 
 class Container extends Component {
-  render() {
+   render() {
     return (
       <div className="container Container-marginTop Container-color">
-      <AddTask />
-        <List />
-        <hr />
-        <footer>
-          <p>www.codehandbook.org</p>
-        </footer>
+        <ListContextProvider>
+          <AddTask />
+          <ListTask />
+        </ListContextProvider>
       </div>
     );
   }
