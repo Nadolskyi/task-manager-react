@@ -15,15 +15,15 @@ class ConfirmForm extends Component {
   handleShow = () => this.setState({ show: true });
 
   handleCloseSave = () => {
-    const {deleteFromList} = this.context;
+    const { dispatch } = this.context;
+    dispatch({ type: 'REMOVE_BOOK', index: this.props.index });
     this.setState({ show: false });
-    deleteFromList(this.props.index);
   }
 
   render() {
     return (
       <>
-        <Button size = "sm" variant="warning" onClick={this.handleShow}>
+        <Button size="sm" variant="warning" onClick={this.handleShow}>
           Delete
         </Button>
 

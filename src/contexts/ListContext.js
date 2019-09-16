@@ -1,50 +1,30 @@
-import React, { createContext, Component } from 'react';
+import React, { createContext, useReducer, useEffect } from 'react';
+import { ListReducer } from '../reducers/ListReducer';
 
 export const ListContext = createContext();
 
-class ListContextProvider extends Component {
-  state = {
-    tasks: [
-      'Cras justo odio',
-      'Dapibus ac facilisis in',
-      'Morbi leo risus',
-      'Porta ac consectetur ac',
-      'Vestibulum at eros'
-    ]
-  }
+const ListContextProvider = (props) => {
+  const initialData = [
+    'Cras justo odio',
+    'Dapibus ac facilisis in',
+    'Morbi leo risus',
+    'Porta ac consectetur ac',
+    'Vestibulum at eros'
+  ];
+  const [tasks, dispatch] = useReducer(ListReducer, [], () => {
+    const localData = localStorage.getItem('tasks');
+    return localData ? JSON.parse(localData) : initialData;
+  });
 
-  deleteFromList = (i) => {
-    const tasksArr = this.state.tasks;
-    tasksArr.splice(i, 1);
-    this.setState({ tasks: tasksArr });
-  }
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks))
+  }, [tasks])
 
-  addTask = (task) => {
-    const tasksArr = this.state.tasks;
-    tasksArr.push(task);
-    this.setState({ tasks: tasksArr });
-  }
-
-  editTask = (newText, i) => {
-    const tasksArr = this.state.tasks;
-    tasksArr[i] = newText;
-    this.setState({ tasks: tasksArr });
-  }
-
-  render() {
-    return (
-      <ListContext.Provider
-        value={{
-          ...this.state,
-          editTask: this.editTask,
-          deleteFromList: this.deleteFromList,
-          addTask: this.addTask
-        }}
-      >
-        {this.props.children}
-      </ListContext.Provider>
-    );
-  }
+  return (
+    <ListContext.Provider value={{ tasks, dispatch }}>
+      {props.children}
+    </ListContext.Provider>
+  );
 }
 
 export default ListContextProvider;

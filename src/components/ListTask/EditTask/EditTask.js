@@ -32,8 +32,12 @@ class EditTask extends Component {
 
   handleEdit = (e) => {
     e.preventDefault();
-    const {editTask} = this.context;
-    editTask(this.state.taskText, this.props.index)
+    const { dispatch } = this.context;
+    dispatch({
+      type: 'EDIT_BOOK',
+      index: this.props.index,
+      task: this.state.taskText
+    })
     this.setState({
       show: false,
     })

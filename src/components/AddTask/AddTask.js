@@ -32,8 +32,8 @@ class AddTask extends Component {
 
   handleAdd = (e) => {
     e.preventDefault();
-    const { addTask } = this.context;
-    addTask(this.state.taskText)
+    const { dispatch } = this.context;
+    dispatch({type: 'ADD_TASK', task: this.state.taskText});
     this.setState({
       show: false,
       taskText: ""
