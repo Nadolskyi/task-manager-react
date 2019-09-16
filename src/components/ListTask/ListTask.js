@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Row, ListGroup, Col } from 'react-bootstrap'
-import ConfirmForm from './ConfirmForm/ConfirmForm.js'
+import ConfirmDeleteForm from './ConfirmDeleteForm/ConfirmDeleteForm.js'
 import EditTask from './EditTask/EditTask.js'
 import { ListContext } from '../../contexts/ListContext.js';
 
@@ -12,7 +12,7 @@ const ListTask = ({ smth, onDelete, editTask }) => {
       <ListGroup.Item key={i}>
         {task}
         <Row>
-          <ConfirmForm index={i} />
+          <ConfirmDeleteForm index={i} />
           <EditTask task={tasks[i]} index={i} />
         </Row>
       </ListGroup.Item>
