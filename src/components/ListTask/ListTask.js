@@ -3,27 +3,41 @@ import { Row, ListGroup, Col } from 'react-bootstrap'
 import ConfirmDeleteForm from './ConfirmDeleteForm/ConfirmDeleteForm.js'
 import EditTask from './EditTask/EditTask.js'
 import { ListContext } from '../../contexts/ListContext.js';
+import './ListTask.css'
 
-const ListTask = ({ smth, onDelete, editTask }) => {
+const ListTask = () => {
 
   const { tasks } = useContext(ListContext);
-  const showList = () => {
-    return tasks.map((task, i) =>
-      <ListGroup.Item key={i}>
-        {task}
-        <Row>
-          <ConfirmDeleteForm index={i} />
-          <EditTask task={tasks[i]} index={i} />
-        </Row>
-      </ListGroup.Item>
-    )
+  const showListDone = (isDone) => {
+    return tasks.map((task, i) => {
+      if (task.isDone === isDone) {
+        return <ListGroup.Item
+          key={i}
+          className="draggable-elem"
+          draggable
+        >
+          {task.text}
+          <Row>
+            <ConfirmDeleteForm index={i} />
+            <EditTask task={tasks[i]} index={i} />
+          </Row>
+        </ListGroup.Item>
+      }
+    })
   }
-  
+
   return (
     <Row>
       <Col>
+        <h4>{'Active'}</h4>
         <ListGroup>
-          {showList()}
+          {showListDone(false)}
+        </ListGroup>
+      </Col>
+      <Col>
+        <h4>{'Done'}</h4>
+        <ListGroup>
+          {showListDone(true)}
         </ListGroup>
       </Col>
     </Row>

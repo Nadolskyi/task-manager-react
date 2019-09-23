@@ -6,7 +6,8 @@ class EditTask extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      taskText: this.props.task,
+      isDone: this.props.task.isDone,
+      taskText: this.props.task.text,
       show: false
     }
   }
@@ -36,10 +37,17 @@ class EditTask extends Component {
     dispatch({
       type: 'EDIT_BOOK',
       index: this.props.index,
-      task: this.state.taskText
+      task: this.state.taskText,
+      isDone: this.state.isDone
     })
     this.setState({
       show: false,
+    })
+  }
+
+  changeStatus = () => {
+    this.setState({
+      isDone: !this.state.isDone
     })
   }
 
@@ -67,6 +75,12 @@ class EditTask extends Component {
                   placeholder="Edit task"
                 >
                 </Form.Control>
+                <Form.Check
+                  type="checkbox"
+                  checked={this.state.isDone}
+                  label={this.state.isDone ? "Move to active" : "Checked as done"}
+                  onChange={this.changeStatus.bind(this)}
+                />
               </Form.Group>
             </Form>
           </Modal.Body>

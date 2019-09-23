@@ -5,11 +5,11 @@ export const ListContext = createContext();
 
 const ListContextProvider = (props) => {
   const initialData = [
-    'Cras justo odio',
-    'Dapibus ac facilisis in',
-    'Morbi leo risus',
-    'Porta ac consectetur ac',
-    'Vestibulum at eros'
+    {text: 'Cras justo odio', isDone: false},
+    {text: 'Dapibus ac facilisis in', isDone: true},
+    {text: 'Morbi leo risus', isDone: false},
+    {text: 'Porta ac consectetur ac', isDone: false},
+    {text: 'Vestibulum at eros', isDone: false}
   ];
   const [tasks, dispatch] = useReducer(ListReducer, [], () => {
     const localData = localStorage.getItem('tasks');

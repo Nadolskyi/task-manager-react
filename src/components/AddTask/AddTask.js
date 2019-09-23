@@ -6,6 +6,7 @@ class AddTask extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      isDone: false,
       taskText: "",
       show: false
     }
@@ -33,10 +34,17 @@ class AddTask extends Component {
   handleAdd = (e) => {
     e.preventDefault();
     const { dispatch } = this.context;
-    dispatch({type: 'ADD_TASK', task: this.state.taskText});
+    dispatch({ type: 'ADD_TASK', task: this.state.taskText, isDone: this.state.isDone });
     this.setState({
       show: false,
+      isDone: false,
       taskText: ""
+    })
+  }
+
+  changeStatus = () => {
+    this.setState({
+      isDone: !this.state.isDone
     })
   }
 
@@ -55,16 +63,20 @@ class AddTask extends Component {
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={this.handleAdd}>
-              <Form.Group className="form-group">
+              <Form.Group>
                 <Form.Control
                   type="text"
                   value={this.state.taskText}
                   onChange={this.handleChange}
-                  className="form-control"
                   id="inputTask"
                   placeholder="Enter task to add"
-                >
-                </Form.Control>
+                />
+                <Form.Check
+                  type="checkbox"
+                  checked={this.state.isDone}
+                  label={this.state.isDone ? "Move to active" : "Checked as done"}
+                  onChange={this.changeStatus.bind(this)}
+                />
               </Form.Group>
             </Form>
           </Modal.Body>
