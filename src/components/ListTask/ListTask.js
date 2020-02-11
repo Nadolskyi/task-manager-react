@@ -1,20 +1,18 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Row, ListGroup, Col } from 'react-bootstrap'
+import { useSelector } from 'react-redux';
 import ConfirmDeleteForm from './ConfirmDeleteForm/ConfirmDeleteForm.js'
 import EditTask from './EditTask/EditTask.js'
-import { ListContext } from '../../contexts/ListContext.js';
 import './ListTask.css'
 
 const ListTask = () => {
-
-  const { tasks } = useContext(ListContext);
+  const tasks = useSelector((state) => state);
   const showListDone = (isDone) => {
     return tasks.map((task, i) => {
       if (task.isDone === isDone) {
         return <ListGroup.Item
           key={i}
           className="draggable-elem"
-          draggable
         >
           {task.text}
           <Row>

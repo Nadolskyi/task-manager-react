@@ -1,97 +1,83 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { Modal, Form, Button } from 'react-bootstrap';
-import { ListContext } from '../../contexts/ListContext';
+import { useDispatch } from 'react-redux';
+import {addTask} from '../../actions/actions'
 
-class AddTask extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isDone: false,
-      taskText: "",
-      show: false
-    }
+const AddTask = () => {
+  const [isShown, setIsShown] = useState(false);
+  const [taskText, setTaskText] = useState('');
+  const [isDone, setIsDone] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleChange = (event) => {
+    setTaskText(event.target.value);
   }
 
-  static contextType = ListContext;
-
-  handleChange = (event) => {
-    this.setState({ taskText: event.target.value });
+  const handleClose = () => {
+    setIsShown(false);
   }
 
-  handleClose = () => {
-    this.setState({
-      taskText: "",
-      show: false
-    })
+  const handleShow = () => {
+    setIsShown(true);
   }
 
-  handleShow = () => {
-    this.setState({
-      show: true
-    })
-  }
-
-  handleAdd = (e) => {
+  const handleAdd = (e) => {
     e.preventDefault();
-    const { dispatch } = this.context;
-    dispatch({ type: 'ADD_TASK', task: this.state.taskText, isDone: this.state.isDone });
-    this.setState({
-      show: false,
-      isDone: false,
-      taskText: ""
-    })
+    dispatch(addTask(taskText, isDone));
+    setIsShown(false);
   }
 
-  changeStatus = () => {
-    this.setState({
-      isDone: !this.state.isDone
-    })
+  const changeStatus = () => {
+    setIsDone(!isDone)
   }
 
-  render() {
-    return (
-      <div className="row">
-        <div className="col-sm-8">
-          <h3 className="AddTask-header">React Task Manager</h3>
-        </div>
-        <div className="col-sm-4">
-          <button type="button" className="btn btn-success AddTask-button" onClick={this.handleShow}>Add</button>
-        </div>
-        <Modal show={this.state.show} onHide={this.handleClose}>
-          <Modal.Header>
-            <Modal.Title>React Task Manager</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form onSubmit={this.handleAdd}>
-              <Form.Group>
-                <Form.Control
-                  type="text"
-                  value={this.state.taskText}
-                  onChange={this.handleChange}
-                  id="inputTask"
-                  placeholder="Enter task to add"
-                />
-                <Form.Check
-                  type="checkbox"
-                  checked={this.state.isDone}
-                  label={this.state.isDone ? "Move to active" : "Checked as done"}
-                  onChange={this.changeStatus.bind(this)}
-                />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleClose}>
-              Close
-            </Button>
-            <Button onClick={this.handleAdd} className="btn btn-primary">
-              Add
-            </Button>
-          </Modal.Footer>
-        </Modal>
+  return (
+    <div className="row">
+      <div className="col-sm-8">
+        <h3 className="AddTask-header">React Task Manager</h3>
       </div>
-    );
-  }
+      <div className="col-sm-4">
+        <button
+          type="button"
+          className="btn btn-success AddTask-button"
+          onClick={handleShow}
+        >
+          Add
+        </button>
+      </div>
+      <Modal show={isShown} onHide={handleClose}>
+        <Modal.Header>
+          <Modal.Title>React Task Manager</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleAdd}>
+            <Form.Group>
+              <Form.Control
+                type="text"
+                onChange={handleChange}
+                id="inputTask"
+                placeholder="Enter task to add"
+              />
+              <Form.Check
+                type="checkbox"
+                checked={isDone}
+                label={isDone ? "Move to active" : "Checked as done"}
+                onChange={changeStatus}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+            </Button>
+          <Button onClick={handleAdd} className="btn btn-primary">
+            Add
+            </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
 }
 
 export default AddTask;

@@ -1,48 +1,40 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { Modal, Button } from 'react-bootstrap';
-import { ListContext } from '../../../contexts/ListContext';
+import { useDispatch } from 'react-redux';
+import {deletePost} from '../../../actions/actions'
 
-class ConfirmForm extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      show: false
-    }
-  }
-  static contextType = ListContext;
+const ConfirmForm = ({ index }) => {
+  const [isShown, setIsShown] = useState(false);
+  const handleClose = () => setIsShown(false);
+  const handleShow = () => setIsShown(true);
+  const dispatch = useDispatch();
 
-  handleClose = () => this.setState({ show: false });
-  handleShow = () => this.setState({ show: true });
-
-  handleCloseSave = () => {
-    const { dispatch } = this.context;
-    dispatch({ type: 'REMOVE_BOOK', index: this.props.index });
-    this.setState({ show: false });
+  const handleCloseSave = () => {
+    dispatch(deletePost(index));
+    setIsShown(false);
   }
 
-  render() {
-    return (
-      <>
-        <Button size="sm" variant="warning" onClick={this.handleShow}>
-          Delete
+  return (
+    <>
+      <Button size="sm" variant="warning" onClick={handleShow}>
+        Delete
         </Button>
 
-        <Modal show={this.state.show} onHide={this.handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Warning message</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Do you really want to delete ?</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleClose}>
-              Close
+      <Modal show={isShown} onHide={handleClose}>
+        <Modal.Header>
+          <Modal.Title>Warning message</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Do you really want to delete ?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
             </Button>
-            <Button variant="primary" onClick={this.handleCloseSave}>
-              Delete
+          <Button variant="primary" onClick={handleCloseSave}>
+            Delete
             </Button>
-          </Modal.Footer>
-        </Modal>
-      </>
-    );
-  }
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
 }
 export default ConfirmForm;

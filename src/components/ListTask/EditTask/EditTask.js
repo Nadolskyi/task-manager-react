@@ -1,101 +1,80 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { Modal, Form, Button } from 'react-bootstrap';
-import { ListContext } from '../../../contexts/ListContext';
+import { useDispatch } from 'react-redux';
+import { editTask } from '../../../actions/actions';
 
-class EditTask extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isDone: this.props.task.isDone,
-      taskText: this.props.task.text,
-      show: false
-    }
+const EditTask = ({ task, index }) => {
+  const [isShown, setIsShown] = useState(false);
+  const [taskText, setTaskText] = useState(task.text);
+  const [isDone, setIsDone] = useState(task.isDone);
+
+  const dispatch = useDispatch();
+
+  const handleChange = (event) => {
+    setTaskText(event.target.value);
   }
 
-  static contextType = ListContext;
-
-  handleChange = (event) => {
-    this.setState({ taskText: event.target.value });
+  const handleClose = () => {
+    setIsShown(false);
   }
 
-  handleClose = () => {
-    this.setState({
-      show: false,
-      taskText: this.props.task
-    })
+  const handleShow = () => {
+    setIsShown(true);
   }
 
-  handleShow = () => {
-    this.setState({
-      show: true
-    })
-  }
-
-  handleEdit = (e) => {
+  const handleEdit = (e) => {
     e.preventDefault();
-    const { dispatch } = this.context;
-    dispatch({
-      type: 'EDIT_BOOK',
-      index: this.props.index,
-      task: this.state.taskText,
-      isDone: this.state.isDone
-    })
-    this.setState({
-      show: false,
-    })
+    dispatch(editTask(index, taskText, isDone));
+    setIsShown(false);
   }
 
-  changeStatus = () => {
-    this.setState({
-      isDone: !this.state.isDone
-    })
+  const changeStatus = () => {
+    setIsDone(!isDone)
   }
 
-  render() {
-    return (
-      <>
-        <div className="col-sm-4">
-          <Button
-            onClick={this.handleShow}
-          >
+  return (
+    <>
+      <div className="col-sm-4">
+        <Button
+          onClick={handleShow}
+        >
+          Edit
+            </Button>
+      </div>
+      <Modal show={isShown} onHide={handleClose}>
+        <Modal.Header>
+          <Modal.Title>React Task Manager</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleEdit}>
+            <Form.Group>
+              <Form.Control
+                type="text"
+                value={taskText}
+                onChange={handleChange}
+                placeholder="Edit task"
+              >
+              </Form.Control>
+              <Form.Check
+                type="checkbox"
+                checked={isDone}
+                label={isDone ? "Move to active" : "Checked as done"}
+                onChange={changeStatus}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+            </Button>
+          <Button onClick={handleEdit} className="btn btn-primary">
             Edit
             </Button>
-        </div>
-        <Modal show={this.state.show} onHide={this.handleClose}>
-          <Modal.Header>
-            <Modal.Title>React Task Manager</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form onSubmit={this.handleEdit}>
-              <Form.Group>
-                <Form.Control
-                  type="text"
-                  value={this.state.taskText}
-                  onChange={this.handleChange}
-                  placeholder="Edit task"
-                >
-                </Form.Control>
-                <Form.Check
-                  type="checkbox"
-                  checked={this.state.isDone}
-                  label={this.state.isDone ? "Move to active" : "Checked as done"}
-                  onChange={this.changeStatus.bind(this)}
-                />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleClose}>
-              Close
-            </Button>
-            <Button onClick={this.handleEdit} className="btn btn-primary">
-              Edit
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </>
-    );
-  }
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
 }
 
 export default EditTask;
