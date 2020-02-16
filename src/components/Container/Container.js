@@ -1,17 +1,32 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import './Container.css'
 import ListTask from '../ListTask/ListTask'
 import AddTask from '../AddTask/AddTask'
+import { getTasks } from '../../actions/actions'
 
 class Container extends Component {
+
+  componentDidMount() {
+    this.props.onGetTasks();
+  }
+
   render() {
     return (
-      <div className="container Container-marginTop Container-color">
+      this.props.tasks.length ? <div className="container Container-marginTop Container-color">
         <AddTask />
-        <ListTask />
-      </div>
+        <ListTask tasks = {this.props.tasks} />
+      </div> : <h1>Loading..</h1>
     );
   }
 }
 
-export default Container;
+const mapStateToProps = state => ({
+  tasks: state
+});
+
+const mapDispatchToProps = dispatch => ({
+  onGetTasks: () => setTimeout(() => dispatch(getTasks()), 1000),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Container)

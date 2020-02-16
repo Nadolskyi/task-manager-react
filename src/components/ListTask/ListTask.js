@@ -1,12 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Row, ListGroup, Col } from 'react-bootstrap'
-import { useSelector } from 'react-redux';
 import ConfirmDeleteForm from './ConfirmDeleteForm/ConfirmDeleteForm.js'
 import EditTask from './EditTask/EditTask.js'
 import './ListTask.css'
 
-const ListTask = () => {
-  const tasks = useSelector((state) => state);
+const ListTask = ({tasks}) => {
   const showListDone = (isDone) => {
     return tasks.map((task, i) => {
       if (task.isDone === isDone) {
