@@ -5,7 +5,7 @@ import ListTask from '../ListTask/ListTask'
 import AddTask from '../AddTask/AddTask'
 import { getTasks } from '../../actions/actions'
 
-class Container extends Component {
+export class Container extends Component {
 
   componentDidMount() {
     this.props.onGetTasks();
@@ -16,7 +16,7 @@ class Container extends Component {
       this.props.tasks.length ? <div className="container Container-marginTop Container-color">
         <AddTask />
         <ListTask tasks = {this.props.tasks} />
-      </div> : <h1>Loading..</h1>
+      </div> : <h1>Loading...</h1>
     );
   }
 }
