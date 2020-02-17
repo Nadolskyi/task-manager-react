@@ -15,6 +15,7 @@ describe('Container', () => {
     it('renders properly', () => {
       expect(container).toMatchSnapshot();
     })
+    
     it('isLoading', () => {
       expect(container.find('h1').text()).toEqual('Loading...')
     })
