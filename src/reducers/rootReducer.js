@@ -14,9 +14,9 @@ const rootReducer = (state = initialState, action) => {
   switch (action.type) {
     case t.ADD_TASK:
       return [...state, { text: action.task, isDone: action.isDone }]
-    case t.REMOVE_BOOK:
+    case t.REMOVE_TASK:
       return state.filter((task, i) => state.indexOf(state[action.index]) !== i)
-    case t.EDIT_BOOK:
+    case t.EDIT_TASK:
       return returnEditedList(state, action);
     case t.GET_TASKS:
       return downloadedList;

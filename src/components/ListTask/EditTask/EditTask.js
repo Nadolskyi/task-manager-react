@@ -39,7 +39,7 @@ const EditTask = ({ task, index }) => {
           onClick={handleShow}
         >
           Edit
-            </Button>
+        </Button>
       </div>
       <Modal show={isShown} onHide={handleClose}>
         <Modal.Header>

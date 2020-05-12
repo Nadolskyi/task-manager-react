@@ -9,7 +9,7 @@ describe('list actions', () => {
 	})
 	it('editTask', () => {
 		const expectedAction = {
-			type: t.EDIT_BOOK,
+			type: t.EDIT_TASK,
 			index: '',
 			task: '',
 			isDone: false

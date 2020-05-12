@@ -1,5 +1,5 @@
 export const deletePost = (index) => ({
-	type: 'REMOVE_BOOK',
+	type: 'REMOVE_TASK',
 	index
 });
 
@@ -10,7 +10,7 @@ export const addTask = (taskText, isDone) => ({
 });
 
 export const editTask = (index, taskText, isDone) => ({
-	type: 'EDIT_BOOK',
+	type: 'EDIT_TASK',
 	index,
 	task: taskText,
 	isDone
